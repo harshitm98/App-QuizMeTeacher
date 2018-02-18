@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button buttonSetA,buttonSetB,buttonSetC,buttonSetD,frozen;
+    private Button buttonSetA,buttonSetB,buttonSetC,buttonSetD,frozen, addStudents;
 
     public static String selectedButton, photoUrl;
 
@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
         buttonSetB = (Button)findViewById(R.id.set_b);
         buttonSetC = (Button)findViewById(R.id.set_c);
         buttonSetD = (Button)findViewById(R.id.set_d);
+
         frozen = (Button)findViewById(R.id.freeze);
+        addStudents = (Button)findViewById(R.id.add_students);
 
 
         buttonSetA.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +74,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        addStudents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,AddedStudentsActivity.class);
+                startActivity(i);
+            }
+        });
 
 
 
