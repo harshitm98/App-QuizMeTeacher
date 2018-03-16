@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private Button buttonSetA,buttonSetB,buttonSetC,buttonSetD,frozen, addStudents;
+    private Button buttonSetA,buttonSetB,buttonSetC,buttonSetD,frozen, addStudents,addQuestions;
 
     public static String selectedButton, photoUrl;
 
@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         frozen = (Button)findViewById(R.id.freeze);
         addStudents = (Button)findViewById(R.id.add_students);
+        addQuestions = (Button)findViewById(R.id.add_questions);
 
 
         buttonSetA.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +87,14 @@ public class MainActivity extends AppCompatActivity {
         addStudents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               enterTheClassNBR();
+               enterTheClassNBR(0);
+            }
+        });
+
+        addQuestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enterTheClassNBR(1);
             }
         });
 
@@ -95,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("RestrictedApi")
-    public void enterTheClassNBR(){
+    public void enterTheClassNBR(final int flag){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Class NBR");
         alert.setMessage("Enter the class NBR: ");
@@ -117,9 +125,16 @@ public class MainActivity extends AppCompatActivity {
                 String classNBR = input.getText().toString();
                 if(!classNBR.equals("VL201718500")){
                     //TODO: Add regular expression for classNBR
-                    Intent intent = new Intent(MainActivity.this,AddedStudentsActivity.class);
-                    intent.putExtra("classNBR",classNBR);
-                    startActivity(intent);
+                    if(flag == 0){
+                        Intent intent = new Intent(MainActivity.this,AddedStudentsActivity.class);
+                        intent.putExtra("classNBR",classNBR);
+                        startActivity(intent);
+                    }
+                    else if(flag == 1){
+                        Intent intent = new Intent(MainActivity.this,QuestionsAdderActivity.class);
+                        intent.putExtra("classNBR",classNBR);
+                        startActivity(intent);
+                    }
                 }
                 else{
                     Toast.makeText(MainActivity.this, "Please fill the complete classNBR", Toast.LENGTH_SHORT).show();

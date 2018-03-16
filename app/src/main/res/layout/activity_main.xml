@@ -54,5 +54,12 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:layout_width="match_parent" />
+    <Button
+        android:id="@+id/add_questions"
+        android:text="Add questions"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent" />
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.quizmeteacher">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -19,7 +20,8 @@
         </activity>
         <activity android:name=".ImageActivity" />
         <activity android:name=".FrozenActivity" />
-        <activity android:name=".AddedStudentsActivity"></activity>
+        <activity android:name=".AddedStudentsActivity" />
+        <activity android:name=".QuestionsAdderActivity"></activity>
     </application>
 
 </manifest>
