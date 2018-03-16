@@ -1,5 +1,6 @@
 package com.example.android.quizmeteacher;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("RestrictedApi")
     public void enterTheClassNBR(){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Class NBR");
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
         );
         input.setLayoutParams(lp);
+        input.setText("VL201718500");
         alert.setView(input,50,0,50,0);
 
         alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -111,11 +115,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Log.d(TAG, "onClick: Clicked on yes");
                 String classNBR = input.getText().toString();
-                if(!classNBR.equals("")){
+                if(!classNBR.equals("VL201718500")){
+                    //TODO: Add regular expression for classNBR
                     Intent intent = new Intent(MainActivity.this,AddedStudentsActivity.class);
                     intent.putExtra("classNBR",classNBR);
                     startActivity(intent);
                 }
+                else{
+                    Toast.makeText(MainActivity.this, "Please fill the complete classNBR", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
             }
         });
         alert.show();

@@ -4,8 +4,13 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,11 +20,25 @@ import java.io.IOException;
 public class AddedStudentsActivity extends AppCompatActivity {
 
     private TextView addedStudents;
+    private String classNBR,listOfStudents = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_added_students);
+
+        Bundle bundle = getIntent().getExtras();
+
+        classNBR = bundle.getString("classNBR");
+        Button button = (Button)findViewById(R.id.update_list);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addingDataToFirebase();
+            }
+        });
+
+
         addedStudents = (TextView)findViewById(R.id.added_students);
         File sdcard = Environment.getExternalStorageDirectory();
 
@@ -34,6 +53,7 @@ public class AddedStudentsActivity extends AppCompatActivity {
 
             while ((line = br.readLine()) != null) {
                 text.append(line);
+                listOfStudents += line + " ";
                 text.append('\n');
             }
             br.close();
@@ -47,4 +67,13 @@ public class AddedStudentsActivity extends AppCompatActivity {
         //Set the text
         addedStudents.setText(text.toString());
     }
+
+    private void addingDataToFirebase(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference();
+        reference.child("class").child(classNBR).child("classNBR").setValue(classNBR);
+        reference.child("class").child(classNBR).child("studentList").setValue(listOfStudents);
+        Toast.makeText(this, "List of students successfully added to database.", Toast.LENGTH_SHORT).show();
+    }
+
 }

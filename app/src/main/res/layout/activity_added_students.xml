@@ -9,6 +9,11 @@
     tools:context="com.example.android.quizmeteacher.AddedStudentsActivity">
 
 
+    <Button
+        android:id="@+id/update_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="update to database"/>
 
     <TextView
         android:layout_width="match_parent"
