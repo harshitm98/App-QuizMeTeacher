@@ -82,12 +82,7 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.i("Adapter",dataSnapshot.toString());
-                if(dataSnapshot.child("freeze").getValue().equals("1")){
-                    button.setEnabled(true);
-                }
-                questionStat.setText(dataSnapshot.child("questions_solved").getValue().toString() + "/" +
-                dataSnapshot.child("questions_attempted").getValue().toString());
+
             }
 
             @Override

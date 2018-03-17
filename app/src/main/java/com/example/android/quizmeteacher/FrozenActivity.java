@@ -2,7 +2,10 @@ package com.example.android.quizmeteacher;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,7 +33,7 @@ public class FrozenActivity extends AppCompatActivity {
     public DatabaseReference mDatabaseReference;
     public ChildEventListener mChildEventListener;
 
-    public Button button;
+    private static final String TAG = "FrozenActivity";
 
 
     @Override
@@ -45,19 +48,12 @@ public class FrozenActivity extends AppCompatActivity {
         final DataAdapter adapter;
         Bundle bundle = getIntent().getExtras();
         classNBR = bundle.getString("classNBR");
-        button = (Button)findViewById(R.id.refresh);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                overridePendingTransition(0, 0);
-                startActivity(getIntent());
-                overridePendingTransition(0, 0);
-            }
-        });
+        refresh();
 
         adapter = new DataAdapter(this,candidates);
+
+
 
 
 
@@ -112,6 +108,42 @@ public class FrozenActivity extends AppCompatActivity {
         });
     }
     private void refresh(){
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshes();
+            }
+        });
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            // Check if user triggered a refresh:
+            case R.menu.refresh:
+                Log.i(TAG, "Refresh menu item selected");
+
+                // Signal SwipeRefreshLayout to start the progress indicator
+                SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
+                swipeRefreshLayout.setRefreshing(true);
+
+                // Start the refresh background task.
+                // This method calls setRefreshing(false) when it's finished.
+                refreshes();
+
+                return true;
+        }
+
+        // User didn't trigger a refresh, let the superclass handle this action
+        return super.onOptionsItemSelected(item);
+
+    }
+    public void refreshes(){
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 }
