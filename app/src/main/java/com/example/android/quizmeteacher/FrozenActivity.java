@@ -35,6 +35,8 @@ public class FrozenActivity extends AppCompatActivity {
 
     private static final String TAG = "FrozenActivity";
 
+    public static int count;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class FrozenActivity extends AppCompatActivity {
 
                 candidates.add(object);
                 listView.setAdapter(adapter);
+                count  = adapter.getCount();
+                Log.d(TAG, "onChildAdded: " + count);
                 ProgressBar bar = (ProgressBar)findViewById(R.id.spinner);
                 bar.setVisibility(View.GONE);
             }

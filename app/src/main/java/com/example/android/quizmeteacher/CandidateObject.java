@@ -10,6 +10,10 @@ public class CandidateObject {
 
     private String marksObtained;
 
+    private String questionsAttempted;
+
+    private String frozen;
+
     public String getQuestionsAttempted() {
         return questionsAttempted;
     }
@@ -17,8 +21,6 @@ public class CandidateObject {
     public void setQuestionsAttempted(String questionsAttempted) {
         this.questionsAttempted = questionsAttempted;
     }
-
-    private String questionsAttempted;
 
     public String getRegistrtionNumber() {
         return registrtionNumber;
@@ -43,6 +45,4 @@ public class CandidateObject {
     public void setFrozen(String frozen) {
         this.frozen = frozen;
     }
-
-    private String frozen;
 }

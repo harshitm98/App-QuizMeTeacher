@@ -34,6 +34,8 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
     public ChildEventListener mChildEventListener;
 
     public String reg;
+    private static final String TAG = "DataAdapter";
+    int count=0;
 
     public DataAdapter(@NonNull Context context, @NonNull List<CandidateObject> objects) {
         super(context, 0, 0, objects);
@@ -43,7 +45,6 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listitem = convertView;
-
         if(listitem == null){
             listitem = LayoutInflater.from(getContext()).inflate(R.layout.list_layout,parent,false);
         }
@@ -56,7 +57,20 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
         reg = obj.getRegistrtionNumber();
 
         final TextView questionStat = (TextView)listitem.findViewById(R.id.questions_solved);
-        questionStat.setText(obj.getMarksObtained() + "/" + obj.getQuestionsAttempted());
+        questionStat.setText(obj.getMarksObtained());
+
+        final TextView percentage = (TextView)listitem.findViewById(R.id.percentage);
+        int i_marks, i_questionsAttempted;
+        i_marks = Integer.parseInt(obj.getMarksObtained());
+        i_questionsAttempted = Integer.parseInt(obj.getQuestionsAttempted());
+        if(i_questionsAttempted == 0){
+            percentage.setText("0");
+        }
+        else{
+            float t = i_marks*100/i_questionsAttempted;
+            percentage.setText(t + "");
+        }
+
 
         final Button button = (Button)listitem.findViewById(R.id.frozen);
         if(obj.getFrozen().equals("1")){
@@ -75,9 +89,15 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
             }
         });
 
+        final View finalListitem = listitem;
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.child("reg").getValue().toString().equals(registrationNumber.getText().toString())){
+                    final TextView name = (TextView) finalListitem.findViewById(R.id.card_name);
+                    name.setText(dataSnapshot.child("name").getValue().toString());
+                    count++;
+                }
             }
 
             @Override
