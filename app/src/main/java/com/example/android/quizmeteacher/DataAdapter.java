@@ -1,9 +1,11 @@
 package com.example.android.quizmeteacher;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,6 +91,11 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
             }
         });
 
+        //TODO Unfreeze and freeze button and text
+
+        final Button button2 = (Button)listitem.findViewById(R.id.frozen2);
+
+
         final View finalListitem = listitem;
         mChildEventListener = new ChildEventListener() {
             @Override
@@ -97,6 +104,27 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
                     final TextView name = (TextView) finalListitem.findViewById(R.id.card_name);
                     name.setText(dataSnapshot.child("name").getValue().toString());
                     count++;
+                    int colorInt;
+                    if(count%5 == 1){
+                        colorInt = Color.parseColor("#7FA8F7");
+                    }
+                    else if(count%5 == 2){
+                        colorInt = Color.parseColor("#F1A460");
+
+                    }
+                    else if(count%5 == 3){
+                        colorInt = Color.parseColor("#EB6186");
+                    }
+                    else if(count%5 == 3){
+                        colorInt = Color.parseColor("#A07BFE");
+                    }
+                    else{
+                        colorInt = Color.parseColor("#6AE3C4");
+                    }
+                    final CardView cardView = (CardView)finalListitem.findViewById(R.id.card_view);
+                    cardView.setCardBackgroundColor(colorInt);
+                    button.setTextColor(colorInt);
+                    button2.setTextColor(colorInt);
                 }
             }
 
