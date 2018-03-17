@@ -30,7 +30,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 public class DataAdapter extends ArrayAdapter<CandidateObject> {
 
     public FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-    public DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference().child("candidates");
+    public DatabaseReference mDatabaseReference = mFirebaseDatabase.getReference().child("class").child(FrozenActivity.classNBR).child("candidates");
     public ChildEventListener mChildEventListener;
 
     public String reg;
@@ -83,8 +83,8 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Log.i("Adapter",dataSnapshot.toString());
-                if(dataSnapshot.child("frozen").getValue().equals("0")){
-                    button.setEnabled(false);
+                if(dataSnapshot.child("freeze").getValue().equals("1")){
+                    button.setEnabled(true);
                 }
                 questionStat.setText(dataSnapshot.child("questions_solved").getValue().toString() + "/" +
                 dataSnapshot.child("questions_attempted").getValue().toString());
@@ -105,6 +105,7 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
 
             }
         };
+        mDatabaseReference.addChildEventListener(mChildEventListener);
 
         return listitem;
     }

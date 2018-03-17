@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 public class FrozenActivity extends AppCompatActivity {
 
+    public static String classNBR;
     public ArrayList<CandidateObject> candidates;
 
     public FirebaseDatabase mFirebaseDatabase;
@@ -36,19 +38,22 @@ public class FrozenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_item);
 
-        ListView listView = (ListView)findViewById(R.id.list);
+        final ListView listView = (ListView)findViewById(R.id.list);
 
         candidates = new ArrayList<>();
 
         final DataAdapter adapter;
-
+        Bundle bundle = getIntent().getExtras();
+        classNBR = bundle.getString("classNBR");
         button = (Button)findViewById(R.id.refresh);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(0, 0);
                 startActivity(getIntent());
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -57,7 +62,7 @@ public class FrozenActivity extends AppCompatActivity {
 
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("candidates");
+        mDatabaseReference = mFirebaseDatabase.getReference().child("class").child(classNBR).child("candidates");
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -68,6 +73,9 @@ public class FrozenActivity extends AppCompatActivity {
                 object.setFrozen(dataSnapshot.child("freeze").getValue().toString());
 
                 candidates.add(object);
+                listView.setAdapter(adapter);
+                ProgressBar bar = (ProgressBar)findViewById(R.id.spinner);
+                bar.setVisibility(View.GONE);
             }
 
             @Override
@@ -89,11 +97,7 @@ public class FrozenActivity extends AppCompatActivity {
         };
         mDatabaseReference.addChildEventListener(mChildEventListener);
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,5 +110,8 @@ public class FrozenActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void refresh(){
+
     }
 }

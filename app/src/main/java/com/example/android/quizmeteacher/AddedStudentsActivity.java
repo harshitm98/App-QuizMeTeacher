@@ -73,6 +73,7 @@ public class AddedStudentsActivity extends AppCompatActivity {
         DatabaseReference reference = database.getReference();
         reference.child("class").child(classNBR).child("classNBR").setValue(classNBR);
         reference.child("class").child(classNBR).child("studentList").setValue(listOfStudents);
+        reference.child("class").child(classNBR).child("status").setValue(0);
         Toast.makeText(this, "List of students successfully added to database.", Toast.LENGTH_SHORT).show();
     }
 
