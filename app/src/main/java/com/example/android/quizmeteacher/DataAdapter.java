@@ -86,15 +86,21 @@ public class DataAdapter extends ArrayAdapter<CandidateObject> {
             @Override
             public void onClick(View view) {
                 mDatabaseReference.child(registrationNumber.getText().toString()).child("freeze").setValue(0);
-                button.setEnabled(false);
-                Toast.makeText(getContext(),registrationNumber.getText().toString(),LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Unfreezed" + registrationNumber.getText().toString(),LENGTH_SHORT).show();
             }
         });
+
 
         //TODO Unfreeze and freeze button and text
 
         final Button button2 = (Button)listitem.findViewById(R.id.frozen2);
-
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabaseReference.child(registrationNumber.getText().toString()).child("freeze").setValue(1);
+                Toast.makeText(getContext(),"Freezed" + registrationNumber.getText().toString(),LENGTH_SHORT).show();
+            }
+        });
 
         final View finalListitem = listitem;
         mChildEventListener = new ChildEventListener() {
