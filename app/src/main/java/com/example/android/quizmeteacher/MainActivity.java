@@ -14,10 +14,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private Button buttonSetA,buttonSetB,buttonSetC,buttonSetD,frozen, addStudents,addQuestions;
+    private Button start, stop, frozen, addStudents,addQuestions;
 
     public static String selectedButton, photoUrl;
 
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         frozen = (Button)findViewById(R.id.freeze);
         addStudents = (Button)findViewById(R.id.add_students);
         addQuestions = (Button)findViewById(R.id.add_questions);
+        start = (Button)findViewById(R.id.start_test);
+        stop = (Button)findViewById(R.id.stop_test);
 
         frozen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +53,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 enterTheClassNBR(1);
+            }
+        });
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enterTheClassNBR(3);
+            }
+        });
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                enterTheClassNBR(4);
             }
         });
 
@@ -93,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("classNBR",classNBR);
                         startActivity(intent);
                     }
+                    else if(flag == 3){
+                        startTest(classNBR);
+                    }
+                    else if(flag == 4){
+                        stopTest(classNBR);
+                    }
                 }
                 else{
                     Toast.makeText(MainActivity.this, "Please fill the complete classNBR", Toast.LENGTH_SHORT).show();
@@ -105,5 +129,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         alert.show();
+    }
+    private void startTest(String classNBR){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference("class").child(classNBR).child("status").setValue(1);
+        Toast.makeText(this, "Test started", Toast.LENGTH_SHORT).show();
+    }
+    private void stopTest(String classNBR){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference("class").child(classNBR).child("status").setValue(0);
+        Toast.makeText(this, "Test stopped", Toast.LENGTH_SHORT).show();
     }
 }
